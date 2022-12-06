@@ -1,3 +1,6 @@
+using System;
+using System.Runtime.CompilerServices;
+
 namespace ComplexAlgebra
 {
     /// <summary>
@@ -17,6 +20,56 @@ namespace ComplexAlgebra
     /// TODO:     - e.g. via the Equals(object) method
     public class Complex
     {
-        // TODO: fill this class\
+        private readonly double _re;
+        private readonly double _im;
+        
+        public double Real
+        {
+            get => this._re;
+        }
+
+        public double Imaginary
+        {
+            get => this._im;
+        }
+
+        public double Modulus
+        {
+            get => Math.Sqrt(Math.Pow(this._im, 2) + Math.Pow(this._re, 2));
+        }
+        
+        public double Phase
+        {
+            get => Math.Atan2(Imaginary, Real);
+        }
+
+        public Complex(double real, double imaginary)
+        {
+            this._re = real;
+            this._im = imaginary;
+        }
+
+        public Complex Plus(Complex toAdd) => new Complex(this._re + toAdd.Real, this._im + toAdd.Imaginary);
+        
+        public Complex Minus(Complex toAdd) => new Complex(this._re - toAdd.Real, this._im - toAdd.Imaginary);
+        
+        public Complex Complement() => new Complex(this._re, -this._im);
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Complex)
+            {
+                Complex second = obj as Complex;
+                return second._im.Equals(this._im) && second._re.Equals(this._re);
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(this._re, this._im);
+
+        //todo migliorare
+        public override string ToString() =>
+            this._im == 0 ? $"{this._re}" : this._re == 0 ? $"i{this._im}" : $"{this._re}+i{this._im}";
     }
 }
